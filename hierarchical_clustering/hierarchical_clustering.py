@@ -1,7 +1,8 @@
+#just remember the logic for merging the clusters, everything else is easy.
+
 def read_data():
 	dataset = {}
 	dataset['rows'] = ['a', 'b', 'c', 'd', 'e', 'f']
-	dataset['cols'] = ['a', 'b', 'c', 'd', 'e', 'f']
 	dataset['mat']  = [
 											[0,662,877,255,412,996],
 											[662,0,295,468,268,400],
@@ -11,6 +12,18 @@ def read_data():
 											[996,400,138,869,669,0]
 										]
 	return dataset
+
+def print_dataset(dataset, complete = False):
+	print("\n", end="\t")
+	for col in dataset['rows']:
+		print(col, end='\t')
+	if complete:
+		for i in range(len(dataset['mat'])):
+			print("\n" + str(dataset['rows'][i]), end="\t")
+			for num in dataset['mat'][i]:
+				print(num, end='\t')
+
+		print('\n--------------------------------------------------------')
 
 def find_position_of_min_distance(matrix):
 	min_distance = 999999
@@ -30,23 +43,33 @@ def find_position_of_min_distance(matrix):
 def merge_clusters(dataset, min_position):
 	matrix = dataset['mat']
 	new_mat = []
+	min_index_of_merged = min(min_position)
+	max_index_of_merged = max(min_position)
+
+	dataset['rows'][min_index_of_merged] += dataset['rows'][max_index_of_merged]
+	del dataset['rows'][max_index_of_merged]
+
+	#this here is crucial, remember this
 	for x in range(len(matrix) - 1):
+		#we go row-wise
 		new_row = []
 		for y in range(len(matrix) - 1):
 			value = matrix[x][y]
-			if(x == min(min_position)):
-				value = min(value, matrix[max(min_position)][y])
-			elif(y == max(min_position)):
-				value = min(value, mat[max(min_position)][x])
+			if(x == min_index_of_merged):
+				value = min(value, matrix[max_index_of_merged][y])
+			elif(y == min_index_of_merged):
+				value = min(value, matrix[max_index_of_merged][x])
 			new_row.append(value)
 		new_mat.append(new_row)
-	return new_mat
+	dataset['mat'] = new_mat
+	return dataset
 
+def main():
+	dataset = read_data()
+	while len(dataset['mat']) >= 1:
+		print_dataset(dataset)
+		min_position = find_position_of_min_distance(dataset['mat'])
+		dataset = merge_clusters(dataset, min_position)
 
-dataset = read_data()
-print(dataset)
-
-min_position = find_position_of_min_distance(dataset['mat'])
-dataset = merge_clusters(dataset, min_position)
-
-print(dataset)
+main()
+print()
