@@ -6,16 +6,20 @@ def read_dataset():
 	with open('dataset.csv', 'rU') as f:
 		return list(csv.reader(f, delimiter=','))
 
-def print_dataset():
-	for data in dataset:
+def print_dataset(somthing):
+	for data in somthing:
 		print(data)
 
 def is_element_in_data(ele, data):
-	# ele = [1,2]
+	# ele = [[1],[2]]
 	# data = [4,2,5,1,6,2]
 	for e in ele:
-		if e not in data:
-			return False
+		if e.__class__.__name__ == 'list':
+			if e[0] not in data:
+				return False
+		else:
+			if e not in data:
+				return False
 	return True
 
 dataset = read_dataset()
@@ -26,8 +30,11 @@ def get_unique_elements(dataset):
 	for ele in dataset:
 		for e in ele:
 			if e not in unique_elements:
-				unique_elements.append([e])
-	return unique_elements
+				unique_elements.append(e)
+	output = []
+	for u in unique_elements:
+		output.append([u])
+	return output
 
 def get_supported_elements(dataset, elements):
 	count_hash = {}
@@ -43,8 +50,17 @@ def get_supported_elements(dataset, elements):
 	return valid_elements
 
 unique_elements = get_unique_elements(dataset)
+print("Start: ", unique_elements)
 
-print_dataset()
-print
-print("Unique: ", unique_elements)
-print(get_supported_elements(dataset, unique_elements))
+unique_elements = get_supported_elements(dataset, unique_elements)
+start_unique = unique_elements
+print("\nUnique: ", start_unique)
+level = 2
+while(len(unique_elements) > 0):
+	unique_elements = list(combinations(start_unique, level))
+	unique_elements = list(map(list, unique_elements))
+	unique_elements = get_supported_elements(dataset, unique_elements)
+	print("\nUnique: ", unique_elements)
+	level += 1
+
+	
