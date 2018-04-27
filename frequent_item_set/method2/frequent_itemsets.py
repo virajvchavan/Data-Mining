@@ -27,7 +27,12 @@ def get_itemsets(data, items, level):
 			item_sets.append(s)
 	return item_sets
 
-dataset = read_dataset('dataset.csv')
+dataset = read_dataset('market.csv')
 min_support = 40
 min_freq = math.ceil((min_support/100.0)*len(dataset['data']))
-print get_itemsets(dataset['data'], dataset['items'], 2)
+
+for l in range(2, len(dataset['items']) + 1):
+	itemset = get_itemsets(dataset['data'], dataset['items'], l)
+	if(len(itemset) == 0):
+		break
+	print("Level: " + str(l) + ": \n" + str(itemset) + "\n\n")
