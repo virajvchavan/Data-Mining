@@ -3,8 +3,8 @@ import csv, math
 from ast import literal_eval
 
 def read_dataset():
-	with open('plants.csv', 'rU') as f:
-		return list(csv.reader(f, delimiter=' '))
+	with open('groceries.csv', 'rU') as f:
+		return list(csv.reader(f, delimiter=','))
 
 def print_dataset(somthing):
 	for data in somthing:
@@ -16,7 +16,7 @@ def is_element_in_data(ele, data):
 	return True if set(ele).issubset(set(data)) else False
 
 dataset = read_dataset()
-min_support = int(math.ceil(len(dataset)*float(30/100.0)))
+min_support = int(math.ceil(len(dataset)*float(50/100.0)))
 
 def get_unique_elements(dataset):
 	unique_elements = []
@@ -27,7 +27,6 @@ def get_unique_elements(dataset):
 	output = []
 	for u in unique_elements:
 		output.append([u])
-	print("OOOOOOO: ", output)
 	return output
 
 def format_ele(ele):
