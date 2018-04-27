@@ -1,14 +1,13 @@
 import math
 from itertools import combinations
-data = [[1,0,1,1,0,0],
-				[0,0,0,1,1,0],
-				[0,1,1,1,0,0],
-				[1,1,0,1,1,1],
-				[1,0,1,0,0,1]]
-items = ['a', 'b', 'c', 'd', 'e', 'f']
 
-min_support = 40
-min_freq = math.ceil((min_support/100.0)*len(data))
+def read_dataset(filename):
+	lines = open(filename).readlines()
+	items = lines[0].split(',')
+	data = []
+	for line in lines[1:]:
+		data.append(list(map(int, line.split(','))))
+	return { 'items': items, 'data': data }
 
 def get_freq(data, items, s):
 	freq = 0
@@ -28,4 +27,7 @@ def get_itemsets(data, items, level):
 			item_sets.append(s)
 	return item_sets
 
-print get_itemsets(data, items, 2)
+dataset = read_dataset('dataset.csv')
+min_support = 40
+min_freq = math.ceil((min_support/100.0)*len(dataset['data']))
+print get_itemsets(dataset['data'], dataset['items'], 2)
