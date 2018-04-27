@@ -3,27 +3,20 @@ import csv, math
 from ast import literal_eval
 
 def read_dataset():
-	with open('dataset.csv', 'rU') as f:
-		return list(csv.reader(f, delimiter=','))
+	with open('plants.csv', 'rU') as f:
+		return list(csv.reader(f, delimiter=' '))
 
 def print_dataset(somthing):
 	for data in somthing:
 		print(data)
 
 def is_element_in_data(ele, data):
-	# ele = [[1],[2]]
+	# ele = [1,2]
 	# data = [4,2,5,1,6,2]
-	for e in ele:
-		if e.__class__.__name__ == 'list':
-			if e[0] not in data:
-				return False
-		else:
-			if e not in data:
-				return False
-	return True
+	return True if set(ele).issubset(set(data)) else False
 
 dataset = read_dataset()
-min_support = int(math.ceil(len(dataset)*float(60/100.0)))
+min_support = int(math.ceil(len(dataset)*float(30/100.0)))
 
 def get_unique_elements(dataset):
 	unique_elements = []
@@ -34,11 +27,21 @@ def get_unique_elements(dataset):
 	output = []
 	for u in unique_elements:
 		output.append([u])
+	print("OOOOOOO: ", output)
 	return output
+
+def format_ele(ele):
+	new_ele = []
+	if ele[0].__class__.__name__ == 'list':
+		new_ele += [e[0] for e in ele]
+	else:
+		new_ele += [e for e in ele]
+	return new_ele
 
 def get_supported_elements(dataset, elements):
 	count_hash = {}
 	for ele in elements:
+		ele = format_ele(ele)
 		count_hash[repr(ele)] = 0
 		for data in dataset:
 			if is_element_in_data(ele, data):
@@ -51,10 +54,11 @@ def get_supported_elements(dataset, elements):
 
 unique_elements = get_unique_elements(dataset)
 print("Start: ", unique_elements)
-
+# print_dataset(dataset)
 unique_elements = get_supported_elements(dataset, unique_elements)
 start_unique = unique_elements
 print("\nUnique: ", start_unique)
+
 level = 2
 while(len(unique_elements) > 0):
 	unique_elements = list(combinations(start_unique, level))
@@ -62,5 +66,3 @@ while(len(unique_elements) > 0):
 	unique_elements = get_supported_elements(dataset, unique_elements)
 	print("\nUnique: ", unique_elements)
 	level += 1
-
-	
