@@ -1,4 +1,5 @@
 import math
+from random import *
 def read_dataset(filename):
 	lines = open(filename).readlines()
 	data = []
@@ -7,6 +8,7 @@ def read_dataset(filename):
 	return data
 
 def split_data(data, split_ratio):
+	shuffle(data)
 	index = int(len(data) * split_ratio)
 	return data[:index], data[index + 1: ]
 
@@ -70,6 +72,13 @@ def get_predictions(summaries, test):
 		predictions.append(predict(summaries, row))
 	return predictions
 
+def get_accuracy(predictions, test):
+	correct = 0
+	for i in range(len(test)):
+		if test[i][-1] == predictions[i]:
+			correct += 1
+	return float(correct)/float(len(test))
+
 def classify():
 	data =  read_dataset('diabetis.csv')
 	split_ratio = 0.70
@@ -77,6 +86,8 @@ def classify():
 	summaries = summarize_by_class(train)
 	predictions = get_predictions(summaries, test)
 	print(predictions)
+	accuracy = get_accuracy(predictions, test)
+	print(accuracy)
 
 classify()
 
