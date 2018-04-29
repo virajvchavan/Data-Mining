@@ -28,7 +28,10 @@ def std(values):
 	var = 0
 	for val in values:
 		var += pow(val - avg, 2)
-	return math.sqrt(var/(len(values) - 1))
+	std =  math.sqrt(var/(float(len(values) - 1)))
+	if std == 0.0:
+		std = 0.000001
+	return std
 
 def get_summary(instances):
 	summary =  [(mean(a), std(a)) for a in zip(*instances)]
@@ -80,8 +83,8 @@ def get_accuracy(predictions, test):
 	return float(correct)/float(len(test))
 
 def classify():
-	data =  read_dataset('diabetis.csv')
-	split_ratio = 0.70
+	data =  read_dataset('glass_data.csv')
+	split_ratio = 0.67
 	train, test = split_data(data, split_ratio)
 	summaries = summarize_by_class(train)
 	predictions = get_predictions(summaries, test)
