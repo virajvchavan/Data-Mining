@@ -1,3 +1,4 @@
+# https://machinelearningmastery.com/naive-bayes-classifier-scratch-python/
 import math
 from random import *
 def read_dataset(filename):
@@ -12,6 +13,8 @@ def split_data(data, split_ratio):
 	index = int(len(data) * split_ratio)
 	return data[:index], data[index + 1: ]
 
+# divides the whole dataset according to what class they belong to
+# returns { 1: [[a,c,d,1],[d,f,w,1],[f,w,r,1],...], 2: [[f,s,f,2],[v,e,s,2],[f,s,e,2],...] }
 def divide_by_class(train):
 	data = {}
 	for row in train:
@@ -33,6 +36,8 @@ def std(values):
 		std = 0.000001
 	return std
 
+# gets mean and std_deviation for each attribute
+# the zip method gets all the values for each attribute in a single list
 def get_summary(instances):
 	summary =  [(mean(a), std(a)) for a in zip(*instances)]
 	return summary[:-1]
@@ -59,7 +64,9 @@ def get_class_probabs(summaries, row):
 			class_probabs[class_name] *= get_probability(x, mean, std)
 	return class_probabs
 
+# for a row in test data
 def predict(summaries, row):
+	# summaries = { class1: (mean, std), class2: (mean, std) }
 	class_probabs = get_class_probabs(summaries, row)
 	probab = -1
 	predicted_class = None
@@ -84,7 +91,7 @@ def get_accuracy(predictions, test):
 
 def classify():
 	data =  read_dataset('glass_data.csv')
-	split_ratio = 0.67
+	split_ratio = 0.60
 	train, test = split_data(data, split_ratio)
 	summaries = summarize_by_class(train)
 	predictions = get_predictions(summaries, test)
