@@ -1,30 +1,47 @@
-dataset = [	[6,148,72,1],
-						[1,85,66,0],
-						[8,183,64,1],
-						[1,89,66,0],
-						[0,137,40,1],
-						[5,116,74,0],
-						[3,78,50,1]
-					]
+import math
+def read_dataset(filename):
+	lines = open(filename).readlines()
+	data = []
+	for line in lines:
+		data.append(list(map(float, line.split(','))))
+	return data
 
-def get_transpose(dataset):
-	return 	[	[6,1,8,1,0,5,3],
-						[148,85,183,89,137,116,78],
-						[72,66,64,66,40,74,50],
-						[1,0,1,0,1,0,1]
-					]
+def split_data(data, split_ratio):
+	index = int(len(data) * split_ratio)
+	return data[:index], data[index + 1: ]
 
-def get_class_probabilities(class_values):
-	unique_elements =  list(set(class_values))
-	class_counts = [0 for _ in unique_elements]
-	for c in class_values:
-		for i, ele in enumerate(unique_elements):
-			if c == ele:
-				class_counts[i] += 1
+def divide_by_class(train):
+	data = {}
+	for row in train:
+		if row[-1] not in data:
+			data[row[-1]] = []
+		data[row[-1]].append(row)
+	return data
 
-	return [float(count)/len(class_values) for count in class_counts]
-datasetT = get_transpose(dataset)
+def mean(values):
+	return(sum(values)/float(len(values)))
 
-class_probabilties = get_class_probabilities(datasetT[-1])
+def std(values):
+	return 2
 
-print class_probabilties
+def get_summary(instances):
+	summary =  [(mean(a), std(a)) for a in zip(*instances)]
+	return summary[:-1]
+
+def summarize_by_class(train):
+	separated = divide_by_class(train)
+	summaries = {}
+	for class_value in separated:
+		instances = separated[class_value]
+		summaries[class_value] = get_summary(instances)
+	return summaries
+
+def classify():
+	data =  read_dataset('diabetis.csv')
+	split_ratio = 0.70
+	train, test = split_data(data, split_ratio)
+	summaries = summarize_by_class(train)
+	print summaries
+
+classify()
+
