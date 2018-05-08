@@ -29,8 +29,8 @@ def info_gain(data, attribute):
 	unique_class_attr_values = set(data[class_attr])
 
 	# The main steps: 
-	# step 1: I(information) = ( p * log(p)  for each unique value of 'attribute' )
-	# step 2: E = sum of ( I * (count for this value of attr/data['no_of_tuples']) for each unique value of 'attribute')
+	# step 1: I(information) = ( p * log(p)  ...for each unique value of 'attribute' )
+	# step 2: E = sum of ( I * (count for this value of attr/data['no_of_tuples']) ...for each unique value of 'attribute')
 	# step 3: InfoGain = E(class_attri) - E
 
 	# To achieve these steps, we need to store the counts for each attribute values in a great way

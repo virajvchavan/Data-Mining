@@ -1,5 +1,6 @@
 import math
 from itertools import combinations
+from itertools import permutations
 
 def read_dataset(filename):
 	lines = open(filename).readlines()

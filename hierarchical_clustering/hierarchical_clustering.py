@@ -1,4 +1,4 @@
-#just remember the logic for merging the clusters, everything else is easy.
+# just remember the logic for merging the clusters, everything else is easy.
 
 def read_data():
 	dataset = {}
@@ -48,16 +48,19 @@ def merge_clusters(dataset, min_position):
 	dataset['rows'][min_index_of_merged] += dataset['rows'][max_index_of_merged]
 	del dataset['rows'][max_index_of_merged]
 
-	#this here is crucial, remember this
+	# this here is crucial, remember this
 	for x in range(len(matrix) - 1):
-		#we go row-wise
+		# we go row-wise
 		new_row = []
 		for y in range(len(matrix) - 1):
 			value = matrix[x][y]
+
 			if(x == min_index_of_merged):
 				value = min(value, matrix[max_index_of_merged][y])
+
 			elif(y == min_index_of_merged):
 				value = min(value, matrix[max_index_of_merged][x])
+
 			new_row.append(value)
 		new_mat.append(new_row)
 	dataset['mat'] = new_mat
@@ -71,4 +74,3 @@ def main():
 		dataset = merge_clusters(dataset, min_position)
 
 main()
-print()
