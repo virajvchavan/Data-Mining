@@ -89,8 +89,8 @@ def get_accuracy(predictions, test):
 			correct += 1
 	return float(correct)/float(len(test))
 
-def classify():
-	data =  read_dataset('glass_data.csv')
+def classify(filename):
+	data =  read_dataset(filename)
 	split_ratio = 0.60
 	train, test = split_data(data, split_ratio)
 	summaries = summarize_by_class(train)
@@ -99,5 +99,4 @@ def classify():
 	accuracy = get_accuracy(predictions, test)
 	print(accuracy)
 
-classify()
-
+classify('glass_data.csv')

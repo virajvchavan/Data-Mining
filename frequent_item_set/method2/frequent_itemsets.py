@@ -9,12 +9,12 @@ def read_dataset(filename):
 		data.append(list(map(int, line.split(','))))
 	return { 'items': items, 'data': data }
 
-def get_freq(data, items, s):
+def get_freq(data, items, combination):
 	freq = 0
-	for d in data:
+	for row in data:
 		temp = 1
-		for i in s:
-			temp *= d[items.index(i)]
+		for i in combination:
+			temp *= row[items.index(i)]
 		if temp >= 1:
 			freq += 1
 	return freq
