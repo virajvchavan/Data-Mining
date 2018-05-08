@@ -51,7 +51,7 @@ def summarize_by_class(train):
 	return summaries
 
 def get_probability(x, mean, std):
-	e = math.exp(-(math.pow(x-mean, 2)/(2 * math.pow(std, 2))))
+	e = math.exp(-(math.pow(x - mean, 2)/(2 * math.pow(std, 2))))
 	return (1 / (math.sqrt(2*math.pi) * std)) * e
 
 def get_class_probabs(summaries, row):

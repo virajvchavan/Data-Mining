@@ -35,7 +35,7 @@ def print_rules(rules):
 dataset = read_dataset('market.csv')
 min_freq_perc = 40
 min_freq = math.ceil((min_freq_perc/100.0)*len(dataset['data']))
-min_support_perc = 50
+min_confidence_perc = 50 #confidence
 
 rules = []
 for l in range(2, len(dataset['items']) + 1):
@@ -45,13 +45,15 @@ for l in range(2, len(dataset['items']) + 1):
 	# print("Level: " + str(l) + ": \n" + str(itemset) + "\n\n")
 	for s in itemset:
 		freq_s = get_freq(dataset['data'], dataset['items'], s)
-		for i in range(0, len(s) - 1):
-			x = s[0:i+1]
-			y = s[i+1:]
-			freq_x = get_freq(dataset['data'], dataset['items'], x)
-			c = float(freq_s)/float(freq_x)
-			if c*100 >= min_support_perc:
-				rules.append([x, y, c])
+		permutations = list(permutations(s))
+		for _s in permutations:
+			for i in range(0, len(_s) - 1):
+				x = _s[0:i+1]
+				y = _s[i+1:]
+				freq_x = get_freq(dataset['data'], dataset['items'], x)
+				c = float(freq_s)/float(freq_x)
+				if c*100 >= min_confidence_perc:
+					rules.append([x, y, c])
 
 print("\nGenerated Rules: \nGenerated")
 print_rules(rules)
